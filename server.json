@@ -8,16 +8,6 @@
             "Default": "c3.large",
             "AllowedValues": [ "t1.micro", "m1.small", "m1.medium", "m3.medium", "m3.large", "c3.large", "c3.xlarge", "c3.8xlarge", "m1.large", "m1.xlarge", "m3.xlarge", "m3.2xlarge", "m2.xlarge", "m2.2xlarge", "m2.4xlarge", "c1.medium", "c1.xlarge", "cc1.4xlarge", "cc2.8xlarge", "cg1.4xlarge", "hi1.4xlarge", "hs1.8xlarge"],
             "ConstraintDescription": "must be a valid EC2 instance type."
-        },
-       "SecurityGroupId": {
-            "Description": "Security Group id",
-            "Type": "String",
-            "Default": "sg-3832fd57"
-        },
-       "SubnetId": {
-            "Description": "Subnet id",
-            "Type": "String",
-            "Default": "subnet-c7dff7b3"
         }
     },
     "Mappings": {
@@ -240,11 +230,11 @@
                 ],
                 "NetworkInterfaces": [
                     {
-                        "GroupSet": [{"Ref": "SecurityGroupId"}],
+                        "GroupSet": ["sg-bd1cc3d2"],
                         "AssociatePublicIpAddress": "true",
                         "DeviceIndex": "0",
                         "DeleteOnTermination": "true",
-                        "SubnetId": {"Ref": "SubnetId"}
+                        "SubnetId": "subnet-c7dff7b3"
                     }
                 ],
                 "KeyName": "Martin",
