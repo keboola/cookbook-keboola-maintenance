@@ -13,7 +13,7 @@ cookbook_file "/www/connection/index.php" do
 end
 
 
-web_app serverName do
+web_app 'connection.keboola.com' do
 	template "connection.keboola.com.conf.erb"
   server_name "connection.keboola.com"
   server_aliases [node['hostname']]

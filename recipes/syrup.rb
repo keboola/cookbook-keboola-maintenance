@@ -13,7 +13,7 @@ cookbook_file "/www/syrup/index.php" do
 end
 
 
-web_app serverName do
+web_app 'syrup.keboola.com' do
 	template "syrup.keboola.com.conf.erb"
   server_name "syrup.keboola.com"
   server_aliases [node['hostname']]
