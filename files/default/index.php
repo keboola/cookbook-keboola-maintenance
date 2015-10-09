@@ -1,3 +1,39 @@
+<?php
+	$uri = $_SERVER['REQUEST_URI'];
+	$uriParts = explode('/', ltrim($uri, '/'));
+	$reason = getenv('KBC_MAINTENANCE_REASON');
+	$reason = $reason ?: 'maintenance';
+	$estimatedEndTime = getenv('KBC_MAINTENANCE_ESTIMATED_END_TIME') || null;
+
+	if ($uriParts[0] === 'health-check') {
+	        header('Content-Type: application/json');
+	        http_response_code(200);
+	        echo json_encode(['status' => 'ok']);
+	        return;
+	}
+
+	if (strpos($uri, '/storage') === 0 || preg_match('/^\/v[0-9]+\/storage/i', $uri)) {
+		header('Content-Type: application/json');
+		header('Access-Control-Allow-Origin: *');
+		// header('Retry-After: ' . (strtotime($estimatedMaintenanceEnd) - time()));
+		if (isset($_SERVER['REDIRECT_REQUEST_METHOD']) && $_SERVER['REDIRECT_REQUEST_METHOD'] == 'OPTIONS') {
+			// CORS
+			header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+			header('Access-Control-Allow-Headers: content-type, x-requested-with, x-storageapi-token, x-kbc-runid, x-requested-by, x-user-agent');
+			header('HTTP/1.1 204');
+			return;
+		}
+		http_response_code(503);
+		echo json_encode(array(
+			'status' => 'maintenance',
+			'estimatedEndTiAme' => $estimatedEndTime,
+			'reason' => $reason,
+		));
+		return;
+	}
+
+	http_response_code(503);
+?>
 <!doctype html>
 <html lang="en">
 	<head>
@@ -34,12 +70,12 @@
 
 		<div class="container-fluid col-xs-10">
 			<h1 class="kbc-title">
-        System is down for maintenance</h1>
+        Keboola Connection is down for maintenance</h1>
 			<div class="kbc-main">
 				<div class="container-fluid kbc-main-content">
 
   				<div class="col-md-8">
-              <p>The system is down for maintenance.</p>
+              <p>The system is down for <?php echo $reason ?>.</p>
               <p> It'll be back <span id="estimatedEndTime">soon</span>.</p>
               <p>Read more on <a href="http://status.keboola.com" target="_blank">Keboola Status</a></p>
   				</div>
