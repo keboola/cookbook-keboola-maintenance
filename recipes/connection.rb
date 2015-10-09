@@ -15,9 +15,9 @@ end
 
 serverName = "#{node.name}.keboola.com"
 web_app serverName do
+	template "connection.keboola.com.conf.erb"
   server_name serverName
   server_aliases [node['hostname']]
   docroot "/www/connection"
-  cookbook 'apache2'
   enable true
 end
