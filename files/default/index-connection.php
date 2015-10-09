@@ -3,7 +3,7 @@
 	$uriParts = explode('/', ltrim($uri, '/'));
 	$reason = getenv('KBC_MAINTENANCE_REASON');
 	$reason = $reason ?: 'maintenance';
-	$estimatedEndTime = getenv('KBC_MAINTENANCE_ESTIMATED_END_TIME') || null;
+	$estimatedEndTime = getenv('KBC_MAINTENANCE_ESTIMATED_END_TIME');
 
 	if ($uriParts[0] === 'health-check') {
 	        header('Content-Type: application/json');
@@ -24,9 +24,10 @@
 			return;
 		}
 		http_response_code(503);
+		header("Retry-After: 120");
 		echo json_encode(array(
 			'status' => 'maintenance',
-			'estimatedEndTiAme' => $estimatedEndTime,
+			'estimatedEndTime' => $estimatedEndTime,
 			'reason' => $reason,
 		));
 		return;

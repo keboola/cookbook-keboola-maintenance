@@ -6,18 +6,16 @@ directory "/www/connection" do
 end
 
 cookbook_file "/www/connection/index.php" do
-  source "index.php"
+  source "index-connection.php"
   mode "0644"
   owner "deploy"
   group "apache"
 end
 
 
-serverName = "#{node.name}.keboola.com"
 web_app serverName do
 	template "connection.keboola.com.conf.erb"
-  server_name serverName
+  server_name "connection.keboola.com"
   server_aliases [node['hostname']]
-  docroot "/www/connection"
   enable true
 end
