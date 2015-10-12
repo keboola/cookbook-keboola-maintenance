@@ -12,6 +12,7 @@ if ($uriParts[0] === 'health-check') {
 
 http_response_code(503);
 header("Retry-After: 120");
+header('Content-Type: application/json');
 echo json_encode(array(
 	'status' => 'maintenance',
 	'estimatedEndTime' => $estimatedEndTime,
