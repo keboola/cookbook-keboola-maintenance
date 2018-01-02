@@ -1,5 +1,8 @@
+# This Repositary is deprecated, replaced by https://github.com/keboola/maintenance
+
 keboola-generic-server Cookbook
 ===============================
+
 
 Generic server cookbook and CloudFormation template.
 
